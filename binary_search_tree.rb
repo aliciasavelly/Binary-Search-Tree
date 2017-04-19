@@ -75,6 +75,28 @@ class BinarySearchTree
       elsif node.parent.right_child == node
         node.parent.right_child = nil
       end
+    elsif !node.left
+      parent = node.parent
+
+      if node.parent.left == node
+        parent.left_child = node.right_child
+      elsif node.parent.right_child == node
+        parent.right_child = node.right
+      end
+
+      node.right_child.parent = parent
+      node.right_child = nil
+      node.parent = nil
+    elsif !node.right
+      # similar, insert here above but in reverse
+    else
+      left_tree = BinarySearchTree.new(node)
+      replacement = left_tree.maximum
+      #  node's parent should point to replacement
+      # replacement should hold node's parent as parent
+      #  replacement's children should now be node's children
+      #  if our replacement had a child, that child is now going to be replacement.parent's child
+      #  that child's parent pointer is now replacement.parent
     end
   end
 
