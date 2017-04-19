@@ -1,14 +1,18 @@
 require 'byebug'
 
 class BinarySearchTree
+  attr_accessor :root
+
   def initialize(root_val = nil)
     @root = BSTNode.new(root_val)
   end
 
-  attr_accessor :root
+  # def initialize(root = BSTNode.new())
+  #   @root = root
+  # end
 
   def find(el, root = @root)
-    return true if el == root.value
+    return root if el == root.value
 
     if el <= root.value
       return false unless root.left_child
@@ -19,65 +23,99 @@ class BinarySearchTree
     end
   end
 
-  def insert(root = @root, el)
-    new_node = BSTNode.new(el)
+  # def insert(root = @root, value)
+  #   new_node = BSTNode.new(value)
+  #
+  #   unless root.value
+  #     root.value = value
+  #     return
+  #   end
+  #
+  #   if new_node.value <= root.value
+  #     return insert(root.left_child, new_node.value) unless root.left_child.nil?
+  #     new_node.parent = root
+  #     return root.left_child = new_node
+  #   elsif value > root.value
+  #     return insert(root.right_child, new_node.value) if root.right_child
+  #     new_node.parent = root
+  #     return root.right_child = new_node
+  #   end
+  #
+  #   value
+  # end
 
-    unless root.value
-      root.value = el
-      return
-    end
-
-    if new_node.value <= root.value
-      return insert(root.left_child, new_node.value) unless root.left_child.nil?
-      new_node.parent = root
-      return root.left_child = new_node
-    elsif el > root.value
-      return insert(root.right_child, new_node.value) if root.right_child
-      new_node.parent = root
-      return root.right_child = new_node
-    end
-
-    el
-  end
-
-  def delete(el, root = @root)
-    if el == root.value
-      if root.left_child == nil && root.right_child == nil
-        if root.value > root.parent.value
-          root.parent.right_child = nil
-          el = nil
-          return
-        else
-          root.parent.left_child = nil
-          el = nil
-          return
-        end
-      elsif root.left_child == nil || root.right_child == nil
-        if root.value > root.parent.value
-          root.parent.right_child = root.right_child unless root.right_child == nil
-          root.parent.right_child = root.left_child unless root.left_child == nil
-        else
-          root.parent.left_child = root.right_child unless root.right_child == nil
-          root.parent.left_child = root.left_child unless root.left_child == nil
-        end
+  def insert(value)
+    node = BSTNode.new(value)
+    if @root.value.nil?
+      @root.value = node.value
+    elsif value <= @root.value
+      if @root.left_child
+        left_tree = BinarySearchTree.new(@root.left_child)
+        left_tree.insert(value)
       else
-        max_node = maximum(root)
-        if root.value > root.parent.value
-          root.parent.right_child = max_node
-          max_node.left_child = root.left_child
-        else
-          root.parent.left_child = max_node
-          max_node.left_child = root.left_child
-        end
+        @root.left_child = node
+      end
+    elsif value > @root.value
+      if @root.right_child
+        right_tree = BinarySearchTree.new(@root.right_child)
+        right_tree.insert(value)
+      else
+        @root.right_child = node
       end
     end
+  end
 
-    if el <= root.value
-      delete(el, root.left_child)
-    elsif el > root.value
-      delete(el, root.right_child)
+  def delete(value)
+    node = self.find(value)
+    return false unless node
+
+    if !(node.left_child || node.right_child) #
+      if node.parent.left_child == node
+        node.parent.left_child = nil
+      elsif node.parent.right_child == node
+        node.parent.right_child = nil
+      end
     end
   end
+
+  # def delete(el, root = @root)
+  #   if el == root.value
+  #     if root.left_child == nil && root.right_child == nil
+  #       if root.value > root.parent.value
+  #         root.parent.right_child = nil
+  #         el = nil
+  #         return
+  #       else
+  #         root.parent.left_child = nil
+  #         el = nil
+  #         return
+  #       end
+  #     elsif root.left_child == nil || root.right_child == nil
+  #       if root.value > root.parent.value
+  #         root.parent.right_child = root.right_child unless root.right_child == nil
+  #         root.parent.right_child = root.left_child unless root.left_child == nil
+  #       else
+  #         root.parent.left_child = root.right_child unless root.right_child == nil
+  #         root.parent.left_child = root.left_child unless root.left_child == nil
+  #       end
+  #     else
+  #       max_node = maximum(root)
+  #       if root.value > root.parent.value
+  #         root.parent.right_child = max_node
+  #         max_node.left_child = root.left_child
+  #       else
+  #         root.parent.left_child = max_node
+  #         max_node.left_child = root.left_child
+  #       end
+  #     end
+  #   end
+  #
+  #   if el <= root.value
+  #     delete(el, root.left_child)
+  #   elsif el > root.value
+  #     delete(el, root.right_child)
+  #   end
+  # end
 
   def is_balanced?
   end
