@@ -1,10 +1,12 @@
 class BSTNode
-  def initialize(value = nil, left_child = nil, right_child = nil, parent = nil)
+  attr_accessor :left_child, :right_child, :parent
+  attr_reader :value
+  # attr_accessor :value, :left_child, :right_child, :parent
+
+  def initialize(value = nil)
     @value = value
-    @left_child = left_child
-    @right_child = right_child
+    @left_child = nil
+    @right_child = nil
     @parent = parent
   end
-
-  attr_accessor :value, :left_child, :right_child, :parent
 end

@@ -92,4 +92,15 @@ class BinarySearchTree
 
   def depth
   end
+
+  # def find_parent(node)
+  #   return @root if @root.left == node || @root.right == node
+  #   if @root.val > node.val
+  #     left_tree = BinarySearchTree.new(@root.left)
+  #     return left_tree.find_parent(node)
+  #   else
+  #     right_tree = BinarySearchTree.new(@root.right_value)
+  #     return right_tree.find_parent(node)
+  #   end
+  # end
 end
