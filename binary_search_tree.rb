@@ -92,11 +92,25 @@ class BinarySearchTree
     else
       left_tree = BinarySearchTree.new(node)
       replacement = left_tree.maximum
+      replacement_parent = replacement.parent
+      replacement_child = replacement.left_child
+      orig_parent = node.parent
       #  node's parent should point to replacement
       # replacement should hold node's parent as parent
       #  replacement's children should now be node's children
       #  if our replacement had a child, that child is now going to be replacement.parent's child
       #  that child's parent pointer is now replacement.parent
+      if orig_parent.left == node
+        orig_parent.left_child = replacement
+      else
+        orig_parent.right_child = replacement
+      end
+
+      replacement.parent = orig_parent
+      replacement.left = node.left
+      replacement.right = node.right
+      replacement_parent = replacement_child
+      replacement_child.parent = replacement_parent
     end
   end
 
